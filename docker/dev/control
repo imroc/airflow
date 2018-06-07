@@ -1,8 +1,10 @@
 #! /bin/bash
 
+set -eux
+
 REPO="ccr.ccs.tencentyun.com/apache/airflow"
 TAG="dev"
-IMAGE="$repo:$tag"
+IMAGE="$REPO:$TAG"
 
 build (){
     docker build -f Dockerfile -t $IMAGE ../../incubator-airflow
