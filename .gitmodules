@@ -1,0 +1,3 @@
+[submodule "incubator-airflow"]
+	path = incubator-airflow
+	url = https://github.com/apache/incubator-airflow.git
