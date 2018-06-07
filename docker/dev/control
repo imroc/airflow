@@ -1,0 +1,33 @@
+#! /bin/bash
+
+REPO="ccr.ccs.tencentyun.com/apache/airflow"
+TAG="dev"
+IMAGE="$repo:$tag"
+
+build (){
+    docker build -f Dockerfile -t $IMAGE ../../incubator-airflow
+}
+push (){
+    docker push $IMAGE
+}
+
+case "$1" in
+build)
+    build
+	;;
+push)
+    push
+	;;
+up)
+    build
+    push
+	;;
+*)
+	echo "usage:$0 [build|push|up]\n"
+	exit 1
+esac
+
+exit 0
+
+
+
