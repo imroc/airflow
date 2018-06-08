@@ -38,7 +38,7 @@ RUN pip install kubernetes && \
     pip install cryptography && \
     pip install psycopg2-binary #==2.7.4  # I had issues with older versions of psycopg2, just a warning
 
-COPY ../../incubator-airflow /airflow
+COPY . /airflow
 
 RUN cd /airflow && \
     cp ./scripts/ci/kubernetes/docker/airflow-test-env-init.sh /tmp/airflow-test-env-init.sh && \
