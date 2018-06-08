@@ -1,0 +1,67 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: airflow-dags
+  namespace: airflow
+  labels:
+    module: airflow
+    function: dags
+spec:
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 10Gi
+  nfs:
+    path: /data/nfs/dags
+    server: 10.0.0.3
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: airflow-logs
+  namespace: airflow
+  labels:
+    module: airflow
+    function: logs
+spec:
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 10Gi
+  nfs:
+    path: /data/nfs/logs
+    server: 10.0.0.3
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: airflow-dags
+  namespace: airflow
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      module: airflow
+      function: dags
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: airflow-logs
+  namespace: airflow
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      module: airflow
+      function: logs
