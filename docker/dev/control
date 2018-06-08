@@ -7,7 +7,11 @@ TAG="dev"
 IMAGE="$REPO:$TAG"
 
 build (){
+    cp Dockerfile ../../incubator-airflow/Dockerfile
+    cd ../../incubator-airflow
+    git pull
     docker build -t $IMAGE .
+    rm Dockerfile
 }
 push (){
     docker push $IMAGE
