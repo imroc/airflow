@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: '{{ template "airflow.fullname" .  }}-scheduler'
+  labels:
+    module: {{ template "airflow.name" . }}
+    chart: {{ template "airflow.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app: scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      module: {{ template "airflow.name" . }}
+      release: {{ .Release.Name }}
+      app: scheduler
+  template:
+    metadata:
+      labels:
+        module: {{ template "airflow.name" . }}
+        release: {{ .Release.Name }}
+        app: scheduler
+      containers:
+      - name: scheduler
+        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
+        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
+        args: ["airflow", "scheduler"]
+        env:
+        - name: AIRFLOW_KUBE_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: airflow-configmap
+          mountPath: /root/airflow/airflow.cfg
+          subPath: airflow.cfg
+        - name: dags
+          mountPath: /root/airflow/dags
+      volumes:
+      - name: dags
+        persistentVolumeClaim:
+          claimName: '{{ template "airflow.fullname" . }}-dags'
+      - name: airflow-configmap
+        configMap:
+          name:  '{{ template "airflow.fullname" . }}-main'

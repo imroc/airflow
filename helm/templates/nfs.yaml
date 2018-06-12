@@ -1,0 +1,33 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: '{{ template "airflow.fullname" . }}-dags'
+  labels:
+    release: {{ .Release.Name }}
+    module: {{ template "airflow.name" . }}
+    function: dags
+spec:
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: {{ .Values.airflow.dags.nfs.size }}
+  nfs:
+    path: {{ .Values.airflow.dags.nfs.path }}
+    server: {{ .Values.airflow.dags.nfs.server }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: '{{ template "airflow.fullname" . }}-dags'
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.airflow.dags.nfs.size }}
+  selector:
+    matchLabels:
+      release: {{ .Release.Name }}
+      module: {{ template "airflow.name" . }}
+      function: dags

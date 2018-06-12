@@ -1,0 +1,62 @@
+airflow:
+  dags.nfs:
+    path: /data/nfs/dags
+    server: 10.0.0.3
+    size: 100Mi
+  postgres:
+    resources:
+      requests:
+        cpu: ".5"
+        memory: ".5Gi"
+    persistence.data:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: "100Mi"
+      storageClass: "cbs"
+    image:
+      repository: postgres
+      tag: latest
+      pullPolicy: IfNotPresent
+  main:
+    image:
+      repository: ccr.ccs.tencentyun.com/apache/airflow
+      tag: dev
+      pullPolicy: IfNotPresent
+  worker:
+    image:
+      repository: ccr.ccs.tencentyun.com/apache/airflow
+      tag: dev
+      pullPolicy: IfNotPresent
+elasticsearch:
+  image:
+    repository: ccr.ccs.tencentyun.com/elastic.io/elasticsearch
+    tag: 5.6.9
+    pullPolicy: IfNotPresent
+  cluster.name: "elasticsearch"
+  persistence:
+    data:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: "100Mi"
+      storageClass: "cbs"
+    logs:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: "100Mi"
+      storageClass: "cbs"
+  terminationGracePeriodSeconds: 3600
+  heapSize: "512m"
+  resources:
+    limits:
+      cpu: "1"
+      # memory: "1024Mi"
+    requests:
+      cpu: "25m"
+      memory: "512Mi"
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
