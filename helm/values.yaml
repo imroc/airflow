@@ -54,8 +54,8 @@ elasticsearch:
       cpu: "1"
       # memory: "1024Mi"
     requests:
-      cpu: "25m"
-      memory: "512Mi"
+      cpu: "1"
+      memory: "1Gi"
 
   nodeSelector: {}
 
