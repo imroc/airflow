@@ -21,6 +21,7 @@ spec:
         module: {{ template "airflow.name" . }}
         release: {{ .Release.Name }}
         app: webserver
+    spec:
       initContainers:
       - name: "init"
         image: ccr.ccs.tencentyun.com/apache/airflow:dev
@@ -39,7 +40,6 @@ spec:
         args:
           - "-cx"
           - "/tmp/airflow-init.sh"
-    spec:
       containers:
       - name: webserver
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
