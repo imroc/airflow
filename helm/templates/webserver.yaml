@@ -23,9 +23,21 @@ spec:
         app: webserver
     spec:
       initContainers:
+      - name: "chmod"
+        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
+        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
+        volumeMounts:
+        - name: airflow-configmap
+          mountPath: /tmp/airflow-init.sh
+          subPath: airflow-init.sh
+        command:
+          - "chmod"
+        args:
+          - "+x"
+          - "/tmp/airflow-init.sh"
       - name: "init"
-        image: ccr.ccs.tencentyun.com/apache/airflow:dev
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
+        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
         volumeMounts:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
