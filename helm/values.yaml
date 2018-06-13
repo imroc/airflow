@@ -34,7 +34,8 @@ elasticsearch:
     repository: ccr.ccs.tencentyun.com/elastic.io/elasticsearch
     tag: 5.6.9
     pullPolicy: IfNotPresent
-  cluster.name: "elasticsearch"
+  cluster:
+    name: "elasticsearch"
   persistence:
     data:
       enabled: true
