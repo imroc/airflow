@@ -9,7 +9,7 @@ IMAGE="$REPO:$TAG"
 build (){
     cp Dockerfile ../../incubator-airflow/Dockerfile
     cd ../../incubator-airflow
-    git pull
+    git pull origin master
     docker build -t $IMAGE .
     rm Dockerfile
 }
