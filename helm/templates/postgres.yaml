@@ -101,7 +101,5 @@ spec:
     targetPort: 5432
   selector:
     module: {{ template "airflow.name" . }}
-    chart: {{ template "airflow.chart" . }}
     release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
     app: postgres
