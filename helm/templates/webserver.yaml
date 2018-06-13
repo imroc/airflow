@@ -35,7 +35,7 @@ spec:
           subPath: airflow-init.sh
         - name: dags
           mountPath: /root/airflow/dags
-        command: ["cat", "/tmp/airflow-init.sh", "|", "bash"]
+        command: ["bash", ,"-c","/tmp/airflow-init.sh"]
       containers:
       - name: webserver
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
