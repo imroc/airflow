@@ -43,4 +43,4 @@ spec:
           claimName: '{{ template "airflow.fullname" . }}-dags'
       - name: airflow-configmap
         configMap:
-          name:  '{{ template "airflow.fullname" . }}-main'
+          name:  '{{ template "airflow.fullname" . }}'
