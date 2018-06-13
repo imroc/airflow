@@ -21,6 +21,7 @@ spec:
         module: {{ template "airflow.name" . }}
         release: {{ .Release.Name }}
         app: scheduler
+    spec:
       containers:
       - name: scheduler
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"

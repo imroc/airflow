@@ -39,6 +39,7 @@ spec:
         args:
           - "-cx"
           - "/tmp/airflow-init.sh"
+    spec:
       containers:
       - name: webserver
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
