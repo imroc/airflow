@@ -202,7 +202,7 @@ data:
       logs: /usr/share/elasticsearch/logs
       data: /usr/share/elasticsearch/data
     cluster.name: {{ .Values.elasticsearch.cluster.name }}
-    processors: ${PROCESSORS:}
+    #processors: ${PROCESSORS:}
     network.host: 0.0.0.0
     node.name: ${HOSTNAME}
     discovery.zen.minimum_master_nodes: 1
