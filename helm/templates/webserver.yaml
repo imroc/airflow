@@ -23,18 +23,6 @@ spec:
         app: webserver
     spec:
       initContainers:
-      - name: "chmod"
-        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
-        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
-        volumeMounts:
-        - name: airflow-configmap
-          mountPath: /tmp/airflow-init.sh
-          subPath: airflow-init.sh
-        command:
-          - "chmod"
-        args:
-          - "+x"
-          - "/tmp/airflow-init.sh"
       - name: "init"
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
         imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
@@ -48,10 +36,12 @@ spec:
         - name: dags
           mountPath: /root/airflow/dags
         command:
-          - "bash"
+          - "exec"
         args:
-          - "-c"
+          - "cat"
           - "/tmp/airflow-init.sh"
+          - "|"
+          - "bash"
       containers:
       - name: webserver
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
