@@ -52,8 +52,8 @@ spec:
           #valueFrom:
             #resourceFieldRef:
               #resource: limits.cpu
-        #- name: ES_JAVA_OPTS
-          #value: "-Djava.net.preferIPv4Stack=true -Xms{{ .Values.elasticsearch.heapSize }} -Xmx{{ .Values.elasticsearch.heapSize }}"
+        - name: ES_JAVA_OPTS
+          value: "-Djava.net.preferIPv4Stack=true -Xms{{ .Values.elasticsearch.heapSize }} -Xmx{{ .Values.elasticsearch.heapSize }}"
         image: "{{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag }}"
         imagePullPolicy: {{ .Values.elasticsearch.image.pullPolicy }}
         ports:

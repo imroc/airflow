@@ -48,7 +48,7 @@ elasticsearch:
       size: "100Mi"
       storageClass: "cbs"
   terminationGracePeriodSeconds: 3600
-  #heapSize: "512m"
+  heapSize: "512m"
   #resources:
     #limits:
       #cpu: "1"
