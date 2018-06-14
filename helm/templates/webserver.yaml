@@ -82,12 +82,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: airflow
-  namespace: airflow
+  name: {{ template "airflow.fullname" .  }}
 spec:
   type: NodePort
   ports:
   - port: 8080
-    nodePort: 30809
+    nodePort: 30909
   selector:
-    name: airflow
+    module: {{ template "airflow.name" . }}
+    release: {{ .Release.Name }}
+    app: webserver
