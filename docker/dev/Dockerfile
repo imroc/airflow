@@ -41,4 +41,4 @@ RUN pip install kubernetes && \
 COPY . /airflow
 
 RUN cd /airflow && \
-    pip install -e .[devel]
+    pip install -e .[devel_all]
