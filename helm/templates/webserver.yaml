@@ -36,12 +36,10 @@ spec:
         - name: dags
           mountPath: /root/airflow/dags
         command:
-          - "exec"
-        args:
-          - "cat"
-          - "/tmp/airflow-init.sh"
-          - "|"
           - "bash"
+        args:
+          - "-c"
+          - "'cat /tmp/airflow-init.sh | bash'"
       containers:
       - name: webserver
         image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
