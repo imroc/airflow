@@ -23,12 +23,12 @@ airflow:
     image:
       repository: ccr.ccs.tencentyun.com/apache/airflow
       tag: dev
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   worker:
     image:
       repository: ccr.ccs.tencentyun.com/apache/airflow
       tag: dev
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
 elasticsearch:
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
