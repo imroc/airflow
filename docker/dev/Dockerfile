@@ -41,5 +41,4 @@ RUN pip install kubernetes && \
 COPY . /airflow
 
 RUN cd /airflow && \
-    cp ./scripts/ci/kubernetes/docker/airflow-test-env-init.sh /tmp/airflow-test-env-init.sh && \
     pip install -e .[devel]
