@@ -206,6 +206,7 @@ data:
     network.host: 0.0.0.0
     node.name: ${HOSTNAME}
     discovery.zen.minimum_master_nodes: 1
+    xpack.security.enabled: false
 
   log4j2.properties: |-
     status = error
