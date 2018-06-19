@@ -12,7 +12,11 @@ data:
     parallelism = 32
     load_examples = False
     plugins_folder = /root/airflow/plugins
+{{- if .Values.db.postgres.enable }}
     sql_alchemy_conn = postgresql+psycopg2://root:root@{{ template "postgres.fullname" . }}:5432/airflow
+{{- else if .Values.db.sql_alchemy_conn.enable }}
+    sql_alchemy_conn = .Values.db.sql_alchemy_conn.value
+{{ end }}
     # Airflow can store logs remotely in AWS S3, Google Cloud Storage or Elastic Search.
     # Users must supply an Airflow connection id that provides access to the storage
     # location. If remote_logging is set to true, see UPDATING.md for additional
@@ -154,10 +158,13 @@ data:
 
     [kubernetes]
     airflow_configmap = {{ template "airflow.fullname" . }}
-    worker_container_repository = {{ .Values.airflow.worker.image.repository }}
-    worker_container_tag = {{ .Values.airflow.worker.image.tag }}
+    worker_container_repository = {{ .Values.airflow_worker_image.repository }}
+    worker_container_tag = {{ .Values.airflow_worker_image.tag }}
     delete_worker_pods = False
     dags_volume_claim = {{ template "airflow.fullname" . }}-dags
+{{- if .Values.logging_backend.nfs.enable }}
+    logs_volume_claim = {{ template "airflow.fullname" . }}-logs
+{{ end }}
     in_cluster = True
     namespace = {{ .Release.Namespace }}
     gcp_service_account_keys =
@@ -186,35 +193,8 @@ data:
     hide_sensitive_variable_fields = True
 
     [elasticsearch]
-    elasticsearch_host = {{ template "elasticsearch.fullname" . }}
+    elasticsearch_host =
 
   airflow-init.sh: |-
     airflow initdb && \
     (airflow create_user -u airflow -l airflow -f jon -e airflow@apache.org -r Admin -p airflow || true)
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "elasticsearch.fullname" . }}
-data:
-  elasticsearch.yml: |-
-    path:
-      logs: /usr/share/elasticsearch/logs
-      data: /usr/share/elasticsearch/data
-    cluster.name: {{ .Values.elasticsearch.cluster.name }}
-    #processors: ${PROCESSORS:}
-    network.host: 0.0.0.0
-    node.name: ${HOSTNAME}
-    discovery.zen.minimum_master_nodes: 1
-    xpack.security.enabled: false
-
-  log4j2.properties: |-
-    status = error
-    appender.console.type = Console
-    appender.console.name = console
-    appender.console.layout.type = PatternLayout
-    appender.console.layout.pattern = [%d{ISO8601}][%-5p][%-25c{1.}] %marker%m%n
-    rootLogger.level = info
-    rootLogger.appenderRef.console.ref = console
-    logger.searchguard.name = com.floragunn
-    logger.searchguard.level = info

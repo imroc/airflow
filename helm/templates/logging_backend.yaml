@@ -1,0 +1,35 @@
+{{- if .Values.logging_backend.nfs.enable }}
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: '{{ template "airflow.fullname" . }}-logs'
+  labels:
+    release: {{ .Release.Name }}
+    module: {{ template "airflow.name" . }}
+    function: logs
+spec:
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: {{ .Values.logging_backend.nfs.size }}
+  nfs:
+    path: {{ .Values.logging_backend.nfs.path }}
+    server: {{ .Values.logging_backend.nfs.server }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: '{{ template "airflow.fullname" . }}-logs'
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.logging_backend.nfs.size }}
+  selector:
+    matchLabels:
+      release: {{ .Release.Name }}
+      module: {{ template "airflow.name" . }}
+      function: logging_backend
+{{ end }}

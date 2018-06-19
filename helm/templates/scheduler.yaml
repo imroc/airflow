@@ -24,8 +24,8 @@ spec:
     spec:
       containers:
       - name: scheduler
-        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
-        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
+        image: "{{ .Values.airflow_image.repository }}:{{ .Values.airflow_image.tag }}"
+        imagePullPolicy: {{ .Values.airflow_image.pullPolicy }}
         args: ["airflow", "scheduler"]
         env:
         - name: AIRFLOW_KUBE_NAMESPACE

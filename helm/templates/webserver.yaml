@@ -24,8 +24,8 @@ spec:
     spec:
       initContainers:
       - name: "init"
-        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
-        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
+        image: "{{ .Values.airflow_image.repository }}:{{ .Values.airflow_image.tag }}"
+        imagePullPolicy: {{ .Values.airflow_image.pullPolicy }}
         volumeMounts:
         - name: airflow-configmap
           mountPath: /root/airflow/airflow.cfg
@@ -45,8 +45,8 @@ spec:
           - "/tmp/airflow-init.sh"
       containers:
       - name: webserver
-        image: "{{ .Values.airflow.main.image.repository }}:{{ .Values.airflow.main.image.tag }}"
-        imagePullPolicy: {{ .Values.airflow.main.image.pullPolicy }}
+        image: "{{ .Values.airflow_image.repository }}:{{ .Values.airflow_image.tag }}"
+        imagePullPolicy: {{ .Values.airflow_image.pullPolicy }}
         ports:
         - name: webserver
           containerPort: 8080

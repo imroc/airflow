@@ -1,17 +1,21 @@
-airflow:
-  dags:
-    nfs:
-      path: /data/nfs/dags
-      server: 10.0.0.3
-      size: 100Mi
+dags:
+  nfs:
+    path: /data/nfs/dags
+    server: 10.0.0.3
+    size: 100Mi
+db:
+  sql_alchemy_conn:
+    enable: false
+    value: 'postgresql+psycopg2://root:root@10.0.0.3:5432/airflow'
   postgres:
+    enable: true
     resources:
       requests:
         cpu: ".5"
         memory: ".5Gi"
     persistence:
       data:
-        enabled: true
+        enable: true
         accessMode: ReadWriteOnce
         size: "100Mi"
         storageClass: "cbs"
@@ -19,48 +23,33 @@ airflow:
       repository: postgres
       tag: latest
       pullPolicy: IfNotPresent
-  main:
-    image:
-      repository: ccr.ccs.tencentyun.com/apache/airflow
-      tag: dev
-      pullPolicy: Always
-  worker:
-    image:
-      repository: ccr.ccs.tencentyun.com/apache/airflow
-      tag: dev
-      pullPolicy: Always
-elasticsearch:
-  image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch
-    tag: 5.6.9
-    pullPolicy: IfNotPresent
-  cluster:
-    name: "elasticsearch"
-  persistence:
-    data:
-      enabled: true
-      accessMode: ReadWriteOnce
-      size: "100Mi"
-      storageClass: "cbs"
-    logs:
-      enabled: true
-      accessMode: ReadWriteOnce
-      size: "100Mi"
-      storageClass: "cbs"
-  terminationGracePeriodSeconds: 3600
-  heapSize: "512m"
-  #resources:
-    #limits:
-      #cpu: "1"
-      ## memory: "1024Mi"
-    #requests:
-      #cpu: "1"
-      #memory: "1Gi"
+    #resources:
+      #limits:
+        #cpu: "1"
+        ## memory: "1024Mi"
+      #requests:
+        #cpu: "1"
+        #memory: "1Gi"
 
-  nodeSelector:
-    es: 'true'
+airflow_image:
+  repository: ccr.ccs.tencentyun.com/apache/airflow
+  tag: dev
+  pullPolicy: Always
+airflow_worker_image:
+  repository: ccr.ccs.tencentyun.com/apache/airflow
+  tag: dev
+  pullPolicy: Always
 
-  tolerations: []
-
-  affinity: {}
+logging_backend:
+  nfs:
+    enable: true
+    path: /data/nfs/logs
+    server: 10.0.0.3
+    size: 100Mi
+  cos:
+    enable: false
+    secret_id: ''
+    secret_key: ''
+    region: ''
+    bucket: ''
 

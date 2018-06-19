@@ -1,3 +1,4 @@
+{{- if .Values.db.postgres.enable }}
 kind: StatefulSet
 apiVersion: apps/v1beta2
 metadata:
@@ -25,8 +26,8 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: '{{ .Values.airflow.postgres.image.repository }}:{{ .Values.airflow.postgres.image.tag }}'
-        imagePullPolicy: {{ .Values.airflow.postgres.image.pullPolicy }}
+        image: '{{ .Values.db.postgres.image.repository }}:{{ .Values.db.postgres.image.tag }}'
+        imagePullPolicy: {{ .Values.db.postgres.image.pullPolicy }}
         ports:
         - containerPort: 5432
           protocol: TCP
@@ -63,14 +64,14 @@ spec:
             - -c
             - exec pg_isready --host $POD_IP
         resources:
-{{ toYaml .Values.elasticsearch.resources | indent 10 }}
-  {{- if not .Values.airflow.postgres.persistence.data.enabled }}
+{{ toYaml .Values.db.postgres.resources | indent 10 }}
+  {{- if not .Values.db.postgres.persistence.data.enable }}
       volumes:
       - name: data
         emptyDir: {}
   {{ end }}
-  {{- if .Values.airflow.postgres.persistence.data.enabled }}
-  {{- with .Values.airflow.postgres.persistence.data }}
+  {{- if .Values.db.postgres.persistence.data.enable }}
+  {{- with .Values.db.postgres.persistence.data }}
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -103,3 +104,4 @@ spec:
     module: {{ template "airflow.name" . }}
     release: {{ .Release.Name }}
     app: postgres
+{{ end }}
