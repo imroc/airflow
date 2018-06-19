@@ -1,0 +1,20 @@
+#! /bin/bash
+
+set -eux
+
+case "$1" in
+install)
+    helm install --name airflow --namespace airflow -f ./helm/values.yaml ./helm
+	;;
+del)
+    helm del --purge airflow
+	;;
+*)
+	echo "usage:$0 [install|del]\n"
+	exit 1
+esac
+
+exit 0
+
+
+
