@@ -24,6 +24,7 @@ RUN apt-get update -y && apt-get install -y \
         libcurlpp-dev \
         curl \
         libssl-dev \
+        libsasl2-dev \
         git \
         inetutils-telnet \
         bind9utils \

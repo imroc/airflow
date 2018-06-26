@@ -160,6 +160,7 @@ data:
     airflow_configmap = {{ template "airflow.fullname" . }}
     worker_container_repository = {{ .Values.airflow_worker_image.repository }}
     worker_container_tag = {{ .Values.airflow_worker_image.tag }}
+    worker_container_image_pull_policy = Always
     delete_worker_pods = False
     dags_volume_claim = {{ template "airflow.fullname" . }}-dags
 {{- if .Values.logging_backend.nfs.enable }}

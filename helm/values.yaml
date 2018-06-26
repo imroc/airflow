@@ -15,7 +15,7 @@ db:
         memory: ".5Gi"
     persistence:
       data:
-        enable: true
+        enable: false
         accessMode: ReadWriteOnce
         size: "100Mi"
         storageClass: "cbs"
