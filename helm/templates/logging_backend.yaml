@@ -31,5 +31,5 @@ spec:
     matchLabels:
       release: {{ .Release.Name }}
       module: {{ template "airflow.name" . }}
-      function: logging_backend
+      function: logs
 {{ end }}
