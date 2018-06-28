@@ -21,9 +21,16 @@ data:
     # Users must supply an Airflow connection id that provides access to the storage
     # location. If remote_logging is set to true, see UPDATING.md for additional
     # configuration requirements.
+{{- if .Values.logging_backend.cos.enable }}
     remote_logging = True
     remote_log_conn_id =
     remote_base_log_folder =
+{{- else if .Values.logging_backend.nfs.enable }}
+    remote_logging = False
+    remote_log_conn_id =
+    remote_base_log_folder =
+    base_log_folder = /root/airflow/logs
+{{ end }}
     encrypt_s3_logs = False
 
     [scheduler]
@@ -158,9 +165,9 @@ data:
 
     [kubernetes]
     airflow_configmap = {{ template "airflow.fullname" . }}
-    worker_container_repository = {{ .Values.airflow_worker_image.repository }}
-    worker_container_tag = {{ .Values.airflow_worker_image.tag }}
-    worker_container_image_pull_policy = Always
+    worker_container_repository = {{ .Values.worker.image.repository }}
+    worker_container_tag = {{ .Values.worker.image.tag }}
+    worker_container_image_pull_policy = {{ .Values.worker.image.pullPolicy }}
     delete_worker_pods = False
     dags_volume_claim = {{ template "airflow.fullname" . }}-dags
 {{- if .Values.logging_backend.nfs.enable }}

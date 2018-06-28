@@ -31,14 +31,19 @@ db:
         #cpu: "1"
         #memory: "1Gi"
 
-airflow_image:
-  repository: ccr.ccs.tencentyun.com/apache/airflow
-  tag: dev
-  pullPolicy: Always
-airflow_worker_image:
-  repository: ccr.ccs.tencentyun.com/apache/airflow
-  tag: dev
-  pullPolicy: Always
+master:
+  image:
+    repository: ccr.ccs.tencentyun.com/apache/airflow
+    tag: dev
+    pullPolicy: Always
+  nodeSelector:
+    airflow: 'true'
+
+worker:
+  image:
+    repository: ccr.ccs.tencentyun.com/apache/airflow
+    tag: dev
+    pullPolicy: Always
 
 logging_backend:
   nfs:
