@@ -15,7 +15,7 @@
 #  specific language governing permissions and limitations      *
 #  under the License.                                           *
 
-FROM ccr.ccs.tencentyun.com/apache:dev
+FROM ccr.ccs.tencentyun.com/apache/airflow:dev
 
 
 COPY . /airflow
