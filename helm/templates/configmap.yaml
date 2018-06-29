@@ -12,6 +12,7 @@ data:
     parallelism = 32
     load_examples = False
     plugins_folder = /root/airflow/plugins
+    fernet_key = F-H9dDp23DtHCK2XE3ZQzJDnZcovJ--v7b5oTDNvu48=
 {{- if .Values.db.postgres.enable }}
     sql_alchemy_conn = postgresql+psycopg2://root:root@{{ template "postgres.fullname" . }}:5432/airflow
 {{- else if .Values.db.sql_alchemy_conn.enable }}
